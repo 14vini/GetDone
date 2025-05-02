@@ -23,7 +23,7 @@ struct GetDoneApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationView{
+            NavigationStack {
                 ListView()
             }
             .environmentObject(listViewModel)

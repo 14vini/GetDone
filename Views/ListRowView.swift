@@ -2,7 +2,7 @@
 //  ListRowView.swift
 //  GetDone
 //
-//  Created by Vinicius on 4/22/25.
+//  Created by Kauã Vinicius on 4/22/25.
 //
 
 import SwiftUI
@@ -19,10 +19,7 @@ struct ListRowView: View {
                   : "circle")
             .imageScale(.large)
             .foregroundColor(.cyan)
-            .onTapGesture {
-                
-                item.isDone.toggle()
-            }
+          
             Text(item.title)
                 .foregroundColor(.primary)
                 .padding(10)
