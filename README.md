@@ -20,6 +20,7 @@ GetDone is a simple and intuitive to-do list app built with **Swift** and **Swif
 1. Clone the repository:
 git clone https://github.com/14vini/GetDone.git
 
-3.	Open the project in Xcode (version 13 or later recommended).
-4.	Make sure the file ListView.swift is selected to see on preview (or your main entry point).
-5.	Select a simulator or device and click the Run (▶) button, or press Cmd + R.
+3.	Open the project in Xcode 
+4.	Make sure you’re running it on a simulator or device with iOS 15 or later.
+3.	Build and run (Cmd + R).
+
