@@ -7,7 +7,7 @@ GetDone is a simple and intuitive to-do list app built with **Swift** and **Swif
 - Add tasks
 - Delete tasks
 - Mark tasks as completed
-- move tasks Piositiion
+- move tasks positiion
 - Clean and responsive interface
 
 ## 🛠️ Technologies Used
