@@ -3,7 +3,7 @@
 //  GetDone
 //
 //  Created by Kauã Vinicius on 4/22/25.
-//i
+//
 import SwiftUI
 
 struct ListView: View {
@@ -15,49 +15,59 @@ struct ListView: View {
         ZStack {
             // background
             Image(colorScheme == .dark ? "backgroundImageDark" : "backgroundImageLight")
-                      .resizable()
-                      .ignoresSafeArea()
-                      .blur(radius: 1)
-            
-         
-            
-            // styling title
-            VStack(spacing: 30) {
-                HStack(spacing: 0) {
-                    
-                    Text("Today's tasks")
-                        .font(.largeTitle.bold())
-                        .foregroundColor(colorScheme == .dark ? .white : .black )
-                            .opacity(0.7)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, 1)
+                 .resizable()
+                 .ignoresSafeArea()
+                 .blur(radius: 1)
 
-                // Card of items
-                ZStack{
-                    if listViewModel.items.isEmpty {
-                        taskList
-                        Text("no items...")
-                            .foregroundColor(.primary.opacity(0.5))
-                        
-                    } else {
-                        VStack {
-                            taskList
-                        }
-                    }
-                }
-                .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
-                .navigationBarItems(
-                    leading: EditButton()
-                        .foregroundColor(.accentColor),
-                        
-                    trailing: NavigationLink("Add", destination: AddView())
-                        .navigationViewStyle(.stack)
-                        .foregroundColor(.accentColor)
-                            )
+            VStack{
+            // styling title
+            StyleTitle
+            CardItems
+               
             }
             .padding()
         }
+    }
+    
+}
+
+extension ListView {
+    private var StyleTitle: some View{
+        VStack(spacing: 30) {
+            HStack(spacing: 0) {
+                
+                Text("Today's tasks")
+                    .font(.largeTitle.bold())
+                    .foregroundColor(colorScheme == .dark ? .white : .black )
+                    .opacity(0.7)
+            }
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.top, 1)
+        }
+    }
+    
+    private var CardItems: some View {
+        ZStack{
+            if listViewModel.items.isEmpty {
+                taskList
+                Text("no items...")
+                    .foregroundColor(.primary.opacity(0.5))
+                
+            } else {
+                VStack {
+                    taskList
+                }
+            }
+        }
+        .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
+        .navigationBarItems(
+            leading: EditButton()
+                .foregroundColor(.primary),
+                
+            trailing: NavigationLink("Add", destination: AddView())
+                .navigationViewStyle(.stack)
+                .foregroundColor(.primary)
+                    )
     }
     
     private var taskList: some View {
@@ -74,18 +84,18 @@ struct ListView: View {
                 .onDelete(perform: listViewModel.deleteItem)
                 .onMove(perform: listViewModel.moveItem)
             }// stylining card
-            .border(Color.primary.opacity(0.1), width: 1)
             .scrollContentBackground(.hidden)
-            .background(Color(colorScheme == .dark ? .black : .white).opacity(0.4))
-            .clipShape(RoundedRectangle(cornerRadius: 40))
+            .background(.ultraThinMaterial)
+            .clipShape(RoundedRectangle(cornerRadius: 30))
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .overlay(
-                RoundedRectangle(cornerRadius: 40)
-                .stroke(Color.primary.opacity(0.1), lineWidth: 3))
+                RoundedRectangle(cornerRadius: 30)
+                    .stroke(Color.white, lineWidth: 0.5).blur(radius: 1))
         }
-}
 
+}
+    
 #Preview {
     NavigationView {
         ListView()

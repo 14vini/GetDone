@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct AddView: View {
     
     @Environment(\.colorScheme) var colorScheme
@@ -20,87 +19,95 @@ struct AddView: View {
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-            Image (colorScheme == .dark ? "backgroundImageDark": "backgroundImageLight")
-                .resizable()
-                .ignoresSafeArea()
-                .blur(radius: 2)
-      
+            Image(colorScheme == .dark ? "backgroundImageDark" : "backgroundImageLight")
+                 .resizable()
+                 .ignoresSafeArea()
+                 .blur(radius: 1)
             
+//            Color(.systemGroupedBackground)
+//                .ignoresSafeArea()
+      
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     
-                    //title
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Add a new task")
-                            .font(.largeTitle.bold())
-                            .foregroundColor(.primary.opacity(0.9))
-                            
-                    }
-                    .padding(.top)
+                    titleStyle
+                    textfieldStyle
                     
-                    // TextField styles
-                    TextField("Type here...", text: $textFieldText)
-                        .padding()
-                        .frame(height: 60)
-                        .border(Color.primary.opacity(0.1), width: 1)
-                        .background(Color(colorScheme == .dark ? .black : .white).opacity(0.4))
-                    
-                        .cornerRadius(20)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 20)
-                            .stroke(Color.primary.opacity(0.1), lineWidth: 2))
-                        .foregroundColor(.primary)
-                    
-                    //button SAVE styles
-                    Button(action:
-                            saveButtonPressed, label: {
-                        Text("save".uppercased())
-                            .foregroundColor(.secondary)
-                            .font(.headline)
-                            .frame(height: 60)
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                Color.cyan.opacity(0.7)
-                                    .background(.ultraThinMaterial)
-                                    .blur(radius: 1)
-                                    )
-                            .cornerRadius(40)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 40)
-                                    .stroke(Color.primary.opacity(0.2), lineWidth: 3)
-                            )
-                    })
+                } .padding()
+               
             }
-            .padding()
+            .background(Color.black.opacity(0.001)) // evita toque fantasma
+
+            // Botão flutuante redondo
+            Button(action: saveButtonPressed) {
+                Image(systemName: "checkmark")
+                    .foregroundColor(.white)
+                    .font(.system(size: 24, weight: .bold))
+                    .frame(width: 90, height: 90)
+                    .background(Color.cyan.opacity(0.7))
+                    .clipShape(Circle())
+                    .shadow(color: .white.opacity(0.5), radius: 6, x: 0, y: 0)
             }
-            .background(Color.black.opacity(0.001))
-          
+            .padding(20)
         }
         .navigationBarTitle("", displayMode: .inline)
+        .navigationBarHidden(true)
         .alert(isPresented: $showAlert, content: getAlert)
     }
     
-    func getAlert() -> Alert{
+    // Alerta padrão
+    func getAlert() -> Alert {
         return Alert(title: Text(alertTitle))
     }
     
+    // Botão de salvar: valida texto e salva ou mostra alerta
     func saveButtonPressed() {
-        if isAppropriateText(){
-            alertTitle = "You need to type something to add a new task 😉"
+        if isAppropriateText() {
             listViewModel.addItem(title: textFieldText)
-            presentationMode.wrappedValue.dismiss() // use this to close the "page" after you add a new task
+            presentationMode.wrappedValue.dismiss()
+        } else {
+            alertTitle = "You need to type something to add a new task 😉"
+            showAlert = true
         }
     }
     
-    func isAppropriateText() -> Bool  {
-        if textFieldText.count < 1{
-            return false
-        }
-        return true
-    }}
+    // Verifica se há texto suficiente
+    func isAppropriateText() -> Bool {
+        return textFieldText.count > 0
+    }
+}
 
+extension AddView{
+    private var titleStyle: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("Add a new task")
+                .font(.largeTitle.bold())
+                .foregroundColor(.primary.opacity(0.8))
+        }.padding(.top)
+
+    }
+    
+    private var textfieldStyle: some View {
+        TextField("Type here...", text: $textFieldText)
+            .padding()
+            .frame(height: 60)
+            .background(.thinMaterial)
+            .cornerRadius(20)
+            .overlay(
+                RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white, lineWidth: 0.5)
+                    .blur(radius: 1)
+            )
+            .foregroundColor(.primary)
+            .shadow(color: .white.opacity(0.2), radius: 2, x: 0, y: 0)
+
+    }
+}
+
+// Preview
 #Preview {
     NavigationView {
         AddView()
-    }.environmentObject(ListViewModel())
+    }
+    .environmentObject(ListViewModel())
 }
