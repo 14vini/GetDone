@@ -7,42 +7,103 @@
 import SwiftUI
 
 struct ListView: View {
-    
     @EnvironmentObject var listViewModel: ListViewModel
     @Environment(\.colorScheme) var colorScheme
+    @State private var showAddView = false
     
     var body: some View {
         ZStack {
-            // background
-            Image(colorScheme == .dark ? "backgroundImageDark" : "backgroundImageLight")
-                 .resizable()
-                 .ignoresSafeArea()
-                 .blur(radius: 1)
+            Color(.systemBackground)
+                .ignoresSafeArea(.all)
 
-            VStack{
-            // styling title
-            StyleTitle
-            CardItems
-               
+            VStack {
+                StyleTitle
+                    .padding()
+                Divider()
+                CardItems
             }
-            .padding()
+
+            VStack {
+                Spacer()
+                tabbarButtons
+              
+            }
         }
     }
-    
 }
 
 extension ListView {
-    private var StyleTitle: some View{
-        VStack(spacing: 30) {
-            HStack(spacing: 0) {
-                
-                Text("Today's tasks")
-                    .font(.largeTitle.bold())
-                    .foregroundColor(colorScheme == .dark ? .white : .black )
-                    .opacity(0.7)
+    
+    private var tabbarButtons: some View{
+        HStack {
+            Spacer()
+            
+            ZStack {
+                Button(action: {
+                    let generator = UIImpactFeedbackGenerator(style: .heavy)
+                    generator.impactOccurred()// acao de feedback
+                    showAddView.toggle()
+                }) {
+                    Image(systemName: "plus")
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundStyle(.cyan.opacity(0.8))
+                        .frame(width: 60, height: 60)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                        .shadow(radius: 2)
+                }
+                .offset(y: -20)
+                .sheet(isPresented: $showAddView) {
+                    AddView()
+                        .presentationDetents([.medium, .large])
+                        .presentationCornerRadius(40)
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top, 1)
+            .padding(.horizontal, 50)
+            .padding(.bottom, 0)
+        }
+    }
+    private var StyleTitle: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack {
+                Text("Sat")
+                    .font(.system(size: 44, weight: .bold))
+                    .foregroundStyle(.primary)
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 2) {
+                    Text("July 19")
+                        .font(.system(size: 24, weight: .semibold))
+                        .foregroundStyle(.gray)
+                    Text("2025")
+                        .font(.system(size: 18, weight: .semibold))
+                        .foregroundStyle(.gray)
+                }
+            }
+            .padding(.horizontal)
+            
+            HStack(alignment: .center){
+                HStack(spacing: 5) {
+                    ForEach(13...19, id: \.self) { day in
+                        VStack {
+                            Text(weekday(for: day))
+                                .font(.headline)
+                                .foregroundStyle(.gray)
+                            Text("\(day)")
+                                .font(.headline)
+                                .foregroundColor(day == 19 ? .cyan : .gray)
+                        }
+                        .frame(width: 50, height: 70)
+                        .background(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(day == 19 ? Color.gray : Color.clear)
+                                .shadow(radius: 3)
+                        )
+                     
+                    }
+                }
+            }
         }
     }
     
@@ -51,8 +112,7 @@ extension ListView {
             if listViewModel.items.isEmpty {
                 taskList
                 Text("no items...")
-                    .foregroundColor(.primary.opacity(0.5))
-                
+                    .foregroundStyle(.primary.opacity(0.5))
             } else {
                 VStack {
                     taskList
@@ -60,14 +120,6 @@ extension ListView {
             }
         }
         .shadow(color: .black.opacity(0.2), radius: 10, x: 0, y: 5)
-        .navigationBarItems(
-            leading: EditButton()
-                .foregroundColor(.primary),
-                
-            trailing: NavigationLink("Add", destination: AddView())
-                .navigationViewStyle(.stack)
-                .foregroundColor(.primary)
-                    )
     }
     
     private var taskList: some View {
@@ -85,15 +137,17 @@ extension ListView {
                 .onMove(perform: listViewModel.moveItem)
             }// stylining card
             .scrollContentBackground(.hidden)
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 30))
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
-            .overlay(
-                RoundedRectangle(cornerRadius: 30)
-                    .stroke(Color.white, lineWidth: 0.5).blur(radius: 1))
+          
         }
 
+}
+
+// Função auxiliar para obter o nome do dia da semana
+private func weekday(for day: Int) -> String {
+    let weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    return weekdays[(day - 13) % weekdays.count]
 }
     
 #Preview {

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /*
  CRUD FUNCTIONS:
@@ -41,15 +42,21 @@ class ListViewModel: ObservableObject {
     
     func deleteItem(indexSet: IndexSet) {
         items.remove(atOffsets: indexSet)
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()// acao de feedback
     }
     
     func moveItem(from: IndexSet, to: Int) {
         items.move(fromOffsets: from, toOffset: to)
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()// acao de feedback
     }
     
     func addItem(title: String) {
         let newItem = ItemModel(title: title, isDone: false)
         items.append(newItem)
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()// acao de feedback
     }
     
     func updateItem(item: ItemModel) {

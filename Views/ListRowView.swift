@@ -21,7 +21,8 @@ struct ListRowView: View {
             .foregroundColor(.cyan)
           
             Text(item.title)
-                .foregroundColor(.primary)
+                .fontWeight(.semibold)
+                .foregroundStyle(.primary)
                 .padding(10)
             Spacer()
             
