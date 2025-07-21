@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1827B05A2E2E883500AAC02B /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1827B0592E2E883500AAC02B /* CalendarView.swift */; };
 		1887544C2DC549BC008C44AA /* noItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1887544B2DC549BC008C44AA /* noItems.swift */; };
 		188754552DC560BE008C44AA /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188754542DC560BE008C44AA /* ListViewModel.swift */; };
 		188A49BE2DB95F97002D8C3B /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188A49BD2DB95F97002D8C3B /* ItemModel.swift */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1827B0592E2E883500AAC02B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		1887544B2DC549BC008C44AA /* noItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = noItems.swift; sourceTree = "<group>"; };
 		188754542DC560BE008C44AA /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		188A49BD2DB95F97002D8C3B /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				18C2D6842DB7D212009BBDFC /* ListRowView.swift */,
 				18C2D6862DB7D61F009BBDFC /* AddView.swift */,
 				1887544B2DC549BC008C44AA /* noItems.swift */,
+				1827B0592E2E883500AAC02B /* CalendarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1887544C2DC549BC008C44AA /* noItems.swift in Sources */,
+				1827B05A2E2E883500AAC02B /* CalendarView.swift in Sources */,
 				188A49BE2DB95F97002D8C3B /* ItemModel.swift in Sources */,
 				18C2D6872DB7D61F009BBDFC /* AddView.swift in Sources */,
 				18C2D6832DB7CDFD009BBDFC /* ListView.swift in Sources */,

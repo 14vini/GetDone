@@ -18,16 +18,20 @@ struct ListRowView: View {
                   ? "largecircle.fill.circle"
                   : "circle")
             .imageScale(.large)
-            .foregroundColor(.cyan)
+            .foregroundStyle(.cyan)
+            .padding(.leading)
           
             Text(item.title)
                 .fontWeight(.semibold)
                 .foregroundStyle(.primary)
-                .padding(10)
+                .padding(15)
             Spacer()
             
             
         }
+        .padding(5)
+        .background(.ultraThickMaterial)
+        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
     
@@ -39,7 +43,7 @@ struct ListRowView: View {
     return Group {
         ListRowView(item: item1)
         ListRowView(item: item2)
-    }
+    }.padding(5)
     
     
 }
