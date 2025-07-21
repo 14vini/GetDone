@@ -10,8 +10,11 @@ import SwiftUI
 struct AddView: View {
     
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss // Forma mais moderna de obter o presentationMode
     @EnvironmentObject var listViewModel: ListViewModel
+    
+    // NOVO: Propriedade para receber a data selecionada da ListView
+    let selectedDate: Date
     
     @State var textFieldText: String = ""
     @State var alertTitle: String = ""
@@ -19,18 +22,22 @@ struct AddView: View {
     
     var body: some View {
         ZStack(alignment: .bottomTrailing) {
-       
-            
             Color(.systemGroupedBackground)
                 .ignoresSafeArea()
-      
+    
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .center, spacing: 20) {
+                    
+                    
+                    Text("\(selectedDate.extractDate(format: "dd/MM"))")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .fontDesign(.rounded)
+                        .foregroundStyle(.secondary)
                     
                     textfieldStyle
                     
                 } .padding()
-               
             }
             
             // Add Button
@@ -41,18 +48,18 @@ struct AddView: View {
         .alert(isPresented: $showAlert, content: getAlert)
     }
     
-    // Alerta padrão
+    // Alerta
     func getAlert() -> Alert {
         return Alert(title: Text(alertTitle))
     }
     
-    // Botão de salvar: valida texto e salva ou mostra alerta
-    func saveButtonPressed() {
+    // add button : valida texto e salva ou mostra alerta
+    func addButtonPressed() {
         if isAppropriateText() {
-            listViewModel.addItem(title: textFieldText)
-            presentationMode.wrappedValue.dismiss()
+            listViewModel.addItem(title: textFieldText, date: selectedDate)
+            dismiss()
         } else {
-            alertTitle = "You need to type something to add a new task"
+            alertTitle = "Você precisa digitar algo para adicionar uma nova tarefa"
             showAlert = true
         }
     }
@@ -63,9 +70,10 @@ struct AddView: View {
     }
 }
 
+// MARK: - Componentes da View
 extension AddView{
     private var textfieldStyle: some View {
-        TextField("Type here...", text: $textFieldText)
+        TextField("Digite aqui...", text: $textFieldText)
             .font(.title.bold())
             .padding()
             .shadow(color: .white.opacity(0.2), radius: 2, x: 0, y: 0)
@@ -73,24 +81,23 @@ extension AddView{
     }
     
     private var addButton: some View {
-        Button(action: saveButtonPressed) {
+        Button(action: addButtonPressed) {
             Image(systemName: "checkmark")
                 .foregroundColor(.white)
                 .font(.system(size: 24, weight: .bold))
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background(Color.cyan.opacity(0.7))
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(color: .primary.opacity(0.5), radius: 2, x: 0, y: 0)
+                .clipShape(RoundedRectangle(cornerRadius: 40))
+                .shadow(color: .primary.opacity(0.5), radius: 1, x: 0, y: 0)
         }
         .padding(20)
     }
 }
 
-// Preview
 #Preview {
     NavigationView {
-        AddView()
+        AddView(selectedDate: Date())
     }
     .environmentObject(ListViewModel())
 }

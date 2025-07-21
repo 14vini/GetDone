@@ -4,15 +4,21 @@
 //
 //  Created by Kauã Vinicius on 4/22/25.
 //
+
 import SwiftUI
 
 struct ListView: View {
     @EnvironmentObject var listViewModel: ListViewModel
     @State private var showAddView = false
-    
-    // NOVO: Variável de estado para guardar a data que o usuário selecionou.
-    // Inicia com a data atual.
     @State private var selectedDate: Date = Date()
+    
+    // Isso mantém a view principal limpa e a lógica de filtro isolada.
+    private var filteredItems: [ItemModel] {
+        return listViewModel.items.filter { item in
+            //função auxiliar para comparar apenas o dia, mês e ano.
+            isSameDay(date1: item.date, date2: selectedDate)
+        }
+    }
     
     var body: some View {
         ZStack {
@@ -20,12 +26,8 @@ struct ListView: View {
                 .ignoresSafeArea(.all)
             
             VStack(spacing: 10) {
-                // MODIFICADO: Substituímos o StyleTitle antigo pela nova CalendarView.
-                // Passamos a data selecionada usando um "binding" ($).
                 CalendarView(selectedDate: $selectedDate)
-                
                 Divider()
-                
                 CardItems
             }
             .padding(.top)
@@ -34,7 +36,10 @@ struct ListView: View {
                 Spacer()
                 tabbarButtons
             }
+            
         }
+        .padding(.top)
+
     }
 }
 
@@ -44,7 +49,6 @@ extension ListView {
     private var tabbarButtons: some View {
         HStack {
             Spacer()
-            
             ZStack {
                 Button(action: {
                     let generator = UIImpactFeedbackGenerator(style: .heavy)
@@ -57,12 +61,19 @@ extension ListView {
                         .frame(width: 70, height: 70)
                         .background(.cyan)
                         .clipShape(Circle())
+                        .overlay(
+                            Circle()
+                                .stroke(Color.white.opacity(0.6), lineWidth: 1)
+                                .blur(radius: 1)
+                        )
                         .shadow(radius: 2)
                 }
                 .sheet(isPresented: $showAddView) {
-                    AddView()
+                    // MODIFICADO: Passamos a data selecionada para a AddView.
+                    // Lembre-se que sua AddView precisa estar preparada para receber essa data.
+                    AddView(selectedDate: selectedDate)
                         .presentationDetents([.medium, .large])
-                        .presentationCornerRadius(50)
+                        .presentationCornerRadius(40)
                 }
             }
             .padding()
@@ -70,17 +81,22 @@ extension ListView {
     }
     
     private var CardItems: some View {
-        // A lógica desta View permanece a mesma por enquanto.
-        // No futuro, podemos filtrar os itens baseados na 'selectedDate'.
         ZStack{
-            if listViewModel.items.isEmpty {
-                taskList
-                Text("Nenhuma tarefa adicionada.")
-                    .foregroundStyle(.primary.opacity(0.5))
-            } else {
-                VStack {
-                    taskList
+            // MODIFICADO: Verificamos se a lista FILTRADA está vazia.
+            if filteredItems.isEmpty {
+                VStack(spacing: 10) {
+                    Spacer()
+                    Text("Nenhuma tarefa para este dia.")
+                        .font(.headline)
+                        .foregroundStyle(.secondary)
+                    Text("Toque em '+' para adicionar uma.")
+                        .font(.subheadline)
+                        .foregroundStyle(.tertiary)
+                    Spacer()
                 }
+            } else {
+                // Se não estiver vazia, mostramos a lista de tarefas.
+                taskList
             }
         }
         .shadow(color: .primary.opacity(0.1), radius: 2, x: 0, y: 2)
@@ -88,7 +104,8 @@ extension ListView {
     
     private var taskList: some View {
         List {
-            ForEach(listViewModel.items) { item in
+            // MODIFICADO: O ForEach agora percorre a lista FILTRADA.
+            ForEach(filteredItems) { item in
                 ListRowView(item: item)
                     .listRowBackground(Color.clear)
                     .listRowInsets(EdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0))
@@ -98,38 +115,62 @@ extension ListView {
                         }
                     }
             }
-            .onDelete(perform: listViewModel.deleteItem)
-            .onMove(perform: listViewModel.moveItem)
+            // MODIFICADO: Usar funções que entendem a lista filtrada.
+            .onDelete(perform: deleteFilteredItem)
+            .onMove(perform: moveFilteredItem)
             .listRowSeparator(.hidden)
         }
         .scrollContentBackground(.hidden)
-        .navigationTitle("")
-        .navigationBarTitleDisplayMode(.inline)
+    }
+    
+    // NOVO: Funções para deletar e mover itens da lista filtrada corretamente.
+    // Elas "traduzem" os índices da lista filtrada para os índices da lista completa.
+    
+    func deleteFilteredItem(indexSet: IndexSet) {
+        let idsToDelete = indexSet.map { filteredItems[$0].id }
+        listViewModel.items.removeAll { item in
+            idsToDelete.contains(item.id)
+        }
+    }
+    
+    func moveFilteredItem(from source: IndexSet, to destination: Int) {
+        var originalSource = IndexSet()
+        for index in source {
+            let itemToMove = filteredItems[index]
+            if let originalIndex = listViewModel.items.firstIndex(where: { $0.id == itemToMove.id }) {
+                originalSource.insert(originalIndex)
+            }
+        }
+        
+        var originalDestination = 0
+        if destination < filteredItems.count {
+            let itemAtDestination = filteredItems[destination]
+            if let originalIndex = listViewModel.items.firstIndex(where: { $0.id == itemAtDestination.id }) {
+                originalDestination = originalIndex
+            }
+        } else {
+            originalDestination = listViewModel.items.endIndex
+        }
+
+        listViewModel.items.move(fromOffsets: originalSource, toOffset: originalDestination)
     }
 }
 
 
 // MARK: - EXTENSÃO DE DATE
-// NOVO: Funções úteis para trabalhar com datas. Isso deixa o código mais limpo.
 extension Date {
-    
-    /// Converte uma data para um formato de texto específico.
-    /// Ex: "dd" -> "21", "EEEE" -> "Monday"
     func extractDate(format: String) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = format
-        // Garante que o calendário do usuário seja respeitado
         formatter.locale = Locale.current
         return formatter.string(from: self)
     }
     
-    /// Verifica se a data é hoje.
     func isToday() -> Bool {
         return Calendar.current.isDateInToday(self)
     }
 }
 
-/// Função auxiliar global para comparar se duas datas são o mesmo dia (ignorando a hora).
 func isSameDay(date1: Date, date2: Date) -> Bool {
     return Calendar.current.isDate(date1, inSameDayAs: date2)
 }

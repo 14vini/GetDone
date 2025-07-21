@@ -8,42 +8,37 @@
 import SwiftUI
 
 struct ListRowView: View {
-    @State
-    var item: ItemModel
+    
+    let item: ItemModel
     
     var body: some View {
         HStack{
-            
             Image(systemName: item.isDone
-                  ? "largecircle.fill.circle"
+                  ? "checkmark.circle.fill"
                   : "circle")
             .imageScale(.large)
             .foregroundStyle(.cyan)
             .padding(.leading)
-          
+            
             Text(item.title)
                 .fontWeight(.semibold)
-                .foregroundStyle(.primary)
+                // line above the text if it's done
+                .strikethrough(item.isDone, color: .primary.opacity(0.7))
+                .foregroundStyle(item.isDone ? .secondary : .primary)
                 .padding(15)
             Spacer()
-            
-            
         }
         .padding(5)
-        .background(.ultraThickMaterial)
-        .clipShape(RoundedRectangle(cornerRadius: 15))
     }
 }
     
-
 #Preview {
-    let item1 = ItemModel(title: "First Item", isDone: true)
-    let item2 = ItemModel(title: "Second Item", isDone: false)
+   
+    let item1 = ItemModel(title: "First Item", isDone: true, date: Date())
+    let item2 = ItemModel(title: "Second Item", isDone: false, date: Date())
 
     return Group {
         ListRowView(item: item1)
         ListRowView(item: item2)
     }.padding(5)
-    
-    
 }

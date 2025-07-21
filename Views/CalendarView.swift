@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-// MARK: - CALENDAR VIEW
-// NOVO: A view que criamos para o calendário semanal
 struct CalendarView: View {
+    
+    @EnvironmentObject var listViewModel: ListViewModel
     @Binding var selectedDate: Date
     @State private var week: [Date] = []
     
@@ -18,6 +18,7 @@ struct CalendarView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
+            
             // Cabeçalho que mostra a data selecionada
             headerView
             
@@ -36,7 +37,8 @@ struct CalendarView: View {
             VStack(alignment: .leading, spacing: 2) {
                 // Dia da semana
                 Text(selectedDate.extractDate(format: "EEEE"))
-                    .font(.system(size: 40, weight: .bold))
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
                     .fontDesign(.rounded)
                     .foregroundStyle(.primary)
                 
@@ -44,34 +46,40 @@ struct CalendarView: View {
                 HStack(spacing: 5) {
                     // Mês e Dia
                     Text(selectedDate.extractDate(format: "MMMM dd"))
-                        .font(.system(size: 24, weight: .semibold))
-                        .fontDesign(.rounded)
+                     
                     // Ano (ex: 2025)
                     Text(selectedDate.extractDate(format: "YYYY"))
-                        .font(.system(size: 24, weight: .semibold))
-                        .fontDesign(.rounded)
+                        
                 }
                 .foregroundStyle(.gray)
+                .font(.title2)
+                .fontWeight(.semibold)
+                .fontDesign(.rounded)
             }
             
             Spacer()
             
             // Botões para navegar entre as semanas
             HStack(spacing: 20) {
-                Button(action: goToPreviousWeek) {
+                Button(action: {
+                    listViewModel.feedbackHaptics()
+                    goToPreviousWeek()
+                }) {
                     Image(systemName: "chevron.left")
                         .font(.title2)
                         .foregroundColor(.gray)
                 }
-                
-                Button(action: goToNextWeek) {
+                Button(action: {
+                    listViewModel.feedbackHaptics()
+                    goToNextWeek()
+                }) {
                     Image(systemName: "chevron.right")
                         .font(.title2)
                         .foregroundColor(.gray)
                 }
             }
-            .padding(8)
-            .background(.ultraThickMaterial)
+            .padding(10)
+            .background(.thickMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 20))
         }
     }
@@ -79,10 +87,11 @@ struct CalendarView: View {
     // View da fileira de dias
     @ViewBuilder
     private var weekDaysView: some View {
-        HStack(spacing: 5) {
+        HStack(spacing: 8) {
             ForEach(week, id: \.self) { day in
-                VStack(spacing: 8) {
-                    // Nome do dia da semana (ex: M)
+                VStack(spacing: 12) {
+                    
+                    // Nome do dia da semana
                     Text(day.extractDate(format: "E").prefix(1))
                         .font(.headline)
                         .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? .white : .gray)
@@ -91,25 +100,28 @@ struct CalendarView: View {
                     Text(day.extractDate(format: "dd"))
                         .font(.headline)
                         .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? .white : .primary)
+                    
                 }
                 .frame(width: 45, height: 70)
                 .background(
-                    // Lógica para destacar o dia selecionado
+                    // selected day style
                     ZStack {
                         if isSameDay(date1: day, date2: selectedDate) {
                             RoundedRectangle(cornerRadius: 15)
                                 .fill(Color.cyan)
-                                .shadow(radius: 3)
+                                .shadow(radius: 1)
                         } else if day.isToday() {
                              RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.red, lineWidth: 1)
+                                .stroke(Color.gray, lineWidth: 1)
                         }
                     }
                 )
                 .onTapGesture {
-                    withAnimation(.spring()) {
+                    listViewModel.feedbackHaptics()
+                    withAnimation(.interactiveSpring) {
                         selectedDate = day
                     }
+                    
                 }
             }
         }

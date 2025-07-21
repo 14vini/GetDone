@@ -1,5 +1,5 @@
 //
-//  noItems.swift
+//  NoItemsView.swift
 //  GetDone
 //
 //  Created by Vinicius on 5/2/25.
@@ -12,48 +12,49 @@ struct NoItemsView: View {
     @State var animate: Bool = false
     @Environment(\.colorScheme) var colorScheme
     
-    let secondaryAccentColor = Color("SecondaryAccentColor")
+    // NOVO: A view precisa saber qual é a data selecionada para
+    // poder passá-la para a AddView quando o botão for clicado.
+    let selectedDate: Date
     
     var body: some View {
         ScrollView {
             VStack(alignment: .center) {
-                Text("no items...")
-                    .foregroundColor(colorScheme == .dark ? .white : .black )
-                        .opacity(0.7)
-                        .padding(.bottom, 15)
+                Text("Nenhuma tarefa para este dia...")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.secondary)
+                    .padding(.bottom, 15)
                 
+                // MODIFICADO: O destino agora usa a propriedade 'selectedDate'
                 NavigationLink(
-                    destination: AddView(),
+                    destination: AddView(selectedDate: selectedDate),
                     label: {
-                        Text("Add Something ")
-                            .foregroundColor(.secondary)
+                        Text("Adicionar Tarefa")
+                            .foregroundColor(.white)
                             .font(.headline)
-                            .frame(height: 60)
+                            .frame(height: 55)
                             .frame(maxWidth: .infinity)
+                            // MODIFICADO: A forma de aplicar múltiplos fundos foi corrigida.
+                            // Usamos um ZStack dentro do .background para sobrepor o material e a cor.
                             .background(
-                                Color.cyan.opacity(0.5)
-                                    .background(.ultraThinMaterial)
-                                    .blur(radius: 2)
-                                    )
-                            .cornerRadius(40)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 40)
-                                    .stroke(Color.primary.opacity(0.5), lineWidth: 1)
-                                    .blur(radius: 0.5)
+                                ZStack {
+                                    // Efeito de vidro
+                                    Capsule().fill(.ultraThinMaterial)
+                                    // Cor semi-transparente por cima
+                                    Capsule().fill(Color.cyan.opacity(0.8))
+                                }
                             )
-
-
                     })
-                    .padding(.horizontal, animate ? 15 : 30)
-                    .shadow(
-                        color: animate ? Color.clear.opacity(0.7) : Color.cyan.opacity(0.7),
-                        radius: animate ? 30 : 10,
-                        x: 0,
-                        y: animate ? 50 : 25)
-                    .scaleEffect(animate ? 1.1 : 1.0)
-                    .offset(y: animate ? -7 : 0)
+                .padding(.horizontal, animate ? 15 : 20)
+                .shadow(
+                    color: animate ? Color.cyan.opacity(0.9) : Color.cyan.opacity(0.4),
+                    radius: animate ? 20 : 10,
+                    x: 0,
+                    y: animate ? 10 : 5)
+                .scaleEffect(animate ? 1.05 : 1.0)
+                .offset(y: animate ? -5 : 0)
             }
-            .frame(maxWidth: 200)
+            .frame(maxWidth: 400)
             .multilineTextAlignment(.center)
             .padding(40)
             .onAppear(perform: addAnimation)
@@ -63,7 +64,7 @@ struct NoItemsView: View {
     
     func addAnimation() {
         guard !animate else { return }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             withAnimation(
                 Animation
                     .easeInOut(duration: 1.5)
@@ -79,7 +80,8 @@ struct NoItemsView: View {
 struct NoItemsView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            NoItemsView()
+            // MODIFICADO: O preview precisa de uma data de exemplo para funcionar.
+            NoItemsView(selectedDate: Date())
                 .navigationTitle("Title")
         }
     }

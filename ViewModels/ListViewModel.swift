@@ -31,6 +31,12 @@ class ListViewModel: ObservableObject {
         getItems()
     }
     
+    // acao de feedback
+    func feedbackHaptics(){
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+    }
+    
     func getItems() {
         guard
             let data = UserDefaults.standard.data(forKey: itemsKey),
@@ -42,22 +48,19 @@ class ListViewModel: ObservableObject {
     
     func deleteItem(indexSet: IndexSet) {
         items.remove(atOffsets: indexSet)
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()// acao de feedback
+        feedbackHaptics()
     }
     
     func moveItem(from: IndexSet, to: Int) {
         items.move(fromOffsets: from, toOffset: to)
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()// acao de feedback
+        feedbackHaptics()
     }
     
-    func addItem(title: String) {
-        let newItem = ItemModel(title: title, isDone: false)
-        items.append(newItem)
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()// acao de feedback
-    }
+    func addItem(title: String, date: Date) {
+          let newItem = ItemModel(title: title, isDone: false, date: date)
+          items.append(newItem)
+          feedbackHaptics()
+      }
     
     func updateItem(item: ItemModel) {
         if let index = items.firstIndex(where: { $0.id == item.id }) {
