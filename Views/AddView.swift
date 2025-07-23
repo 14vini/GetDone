@@ -59,7 +59,7 @@ struct AddView: View {
             listViewModel.addItem(title: textFieldText, date: selectedDate)
             dismiss()
         } else {
-            alertTitle = "Você precisa digitar algo para adicionar uma nova tarefa"
+            alertTitle = "You need to type something to add a new task."
             showAlert = true
         }
     }
@@ -73,7 +73,7 @@ struct AddView: View {
 // MARK: - Componentes da View
 extension AddView{
     private var textfieldStyle: some View {
-        TextField("Digite aqui...", text: $textFieldText)
+        TextField("Digite aqui", text: $textFieldText)
             .font(.title.bold())
             .padding()
             .shadow(color: .white.opacity(0.2), radius: 2, x: 0, y: 0)
@@ -83,13 +83,12 @@ extension AddView{
     private var addButton: some View {
         Button(action: addButtonPressed) {
             Image(systemName: "checkmark")
-                .foregroundColor(.white)
+                .foregroundColor(.primary)
                 .font(.system(size: 24, weight: .bold))
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
-                .background(Color.cyan.opacity(0.7))
-                .clipShape(RoundedRectangle(cornerRadius: 40))
-                .shadow(color: .primary.opacity(0.5), radius: 1, x: 0, y: 0)
+                .background(Color.cyan.opacity(0.8))
+                .glass()
         }
         .padding(20)
     }

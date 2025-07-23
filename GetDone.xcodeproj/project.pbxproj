@@ -8,6 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		1827B05A2E2E883500AAC02B /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1827B0592E2E883500AAC02B /* CalendarView.swift */; };
+		183760DF2E2EB60F00A101EF /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183760DE2E2EB60F00A101EF /* ChatMessage.swift */; };
+		183760E12E2EB63600A101EF /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183760E02E2EB63600A101EF /* ChatView.swift */; };
+		183760E32E2EBD6C00A101EF /* chatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183760E22E2EBD6500A101EF /* chatViewModel.swift */; };
+		183760E62E2EC1C700A101EF /* AIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183760E52E2EBEA800A101EF /* AIService.swift */; };
+		183760EA2E2EC3B200A101EF /* GoogleGenerativeAI in Frameworks */ = {isa = PBXBuildFile; productRef = 183760E92E2EC3B200A101EF /* GoogleGenerativeAI */; };
+		183760EC2E2FC7FE00A101EF /* LiquidGlass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 183760EB2E2FC7F700A101EF /* LiquidGlass.swift */; };
 		1887544C2DC549BC008C44AA /* noItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1887544B2DC549BC008C44AA /* noItems.swift */; };
 		188754552DC560BE008C44AA /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188754542DC560BE008C44AA /* ListViewModel.swift */; };
 		188A49BE2DB95F97002D8C3B /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188A49BD2DB95F97002D8C3B /* ItemModel.swift */; };
@@ -18,6 +24,11 @@
 
 /* Begin PBXFileReference section */
 		1827B0592E2E883500AAC02B /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
+		183760DE2E2EB60F00A101EF /* ChatMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
+		183760E02E2EB63600A101EF /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
+		183760E22E2EBD6500A101EF /* chatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = chatViewModel.swift; sourceTree = "<group>"; };
+		183760E52E2EBEA800A101EF /* AIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIService.swift; sourceTree = "<group>"; };
+		183760EB2E2FC7F700A101EF /* LiquidGlass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidGlass.swift; sourceTree = "<group>"; };
 		1887544B2DC549BC008C44AA /* noItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = noItems.swift; sourceTree = "<group>"; };
 		188754542DC560BE008C44AA /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
 		188A49BD2DB95F97002D8C3B /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
@@ -40,16 +51,34 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				183760EA2E2EC3B200A101EF /* GoogleGenerativeAI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		183760E42E2EBE8700A101EF /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				183760EB2E2FC7F700A101EF /* LiquidGlass.swift */,
+				183760E52E2EBEA800A101EF /* AIService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		183760E72E2EC26900A101EF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		188A49BC2DB95F01002D8C3B /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				188A49BD2DB95F97002D8C3B /* ItemModel.swift */,
+				183760DE2E2EB60F00A101EF /* ChatMessage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -57,10 +86,12 @@
 		18C2D6602DB7C79E009BBDFC = {
 			isa = PBXGroup;
 			children = (
+				183760E42E2EBE8700A101EF /* Services */,
 				18CB3A192DC28CF200E2692E /* ViewModels */,
 				188A49BC2DB95F01002D8C3B /* Models */,
 				18C2D67F2DB7CDC2009BBDFC /* Views */,
 				18C2D66B2DB7C79F009BBDFC /* GetDone */,
+				183760E72E2EC26900A101EF /* Frameworks */,
 				18C2D66A2DB7C79F009BBDFC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -81,6 +112,7 @@
 				18C2D6862DB7D61F009BBDFC /* AddView.swift */,
 				1887544B2DC549BC008C44AA /* noItems.swift */,
 				1827B0592E2E883500AAC02B /* CalendarView.swift */,
+				183760E02E2EB63600A101EF /* ChatView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -88,6 +120,7 @@
 		18CB3A192DC28CF200E2692E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				183760E22E2EBD6500A101EF /* chatViewModel.swift */,
 				188754542DC560BE008C44AA /* ListViewModel.swift */,
 			);
 			path = ViewModels;
@@ -113,6 +146,7 @@
 			);
 			name = GetDone;
 			packageProductDependencies = (
+				183760E92E2EC3B200A101EF /* GoogleGenerativeAI */,
 			);
 			productName = GetDone;
 			productReference = 18C2D6692DB7C79F009BBDFC /* GetDone.app */;
@@ -142,6 +176,9 @@
 			);
 			mainGroup = 18C2D6602DB7C79E009BBDFC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				183760E82E2EC3B200A101EF /* XCRemoteSwiftPackageReference "generative-ai-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 18C2D66A2DB7C79F009BBDFC /* Products */;
 			projectDirPath = "";
@@ -167,9 +204,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				183760DF2E2EB60F00A101EF /* ChatMessage.swift in Sources */,
+				183760E62E2EC1C700A101EF /* AIService.swift in Sources */,
 				1887544C2DC549BC008C44AA /* noItems.swift in Sources */,
+				183760E12E2EB63600A101EF /* ChatView.swift in Sources */,
 				1827B05A2E2E883500AAC02B /* CalendarView.swift in Sources */,
+				183760E32E2EBD6C00A101EF /* chatViewModel.swift in Sources */,
 				188A49BE2DB95F97002D8C3B /* ItemModel.swift in Sources */,
+				183760EC2E2FC7FE00A101EF /* LiquidGlass.swift in Sources */,
 				18C2D6872DB7D61F009BBDFC /* AddView.swift in Sources */,
 				18C2D6832DB7CDFD009BBDFC /* ListView.swift in Sources */,
 				188754552DC560BE008C44AA /* ListViewModel.swift in Sources */,
@@ -379,6 +421,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		183760E82E2EC3B200A101EF /* XCRemoteSwiftPackageReference "generative-ai-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/generative-ai-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.6;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		183760E92E2EC3B200A101EF /* GoogleGenerativeAI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 183760E82E2EC3B200A101EF /* XCRemoteSwiftPackageReference "generative-ai-swift" */;
+			productName = GoogleGenerativeAI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 18C2D6612DB7C79E009BBDFC /* Project object */;
 }

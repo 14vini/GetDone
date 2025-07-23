@@ -17,16 +17,17 @@ struct CalendarView: View {
     @State private var currentWeekFirstDay: Date = Date()
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 30) {
             
             // Cabeçalho que mostra a data selecionada
             headerView
             
             // A fileira com os dias da semana
             weekDaysView
-            
+            Divider()
+
         }
-        .padding(.horizontal)
+        .padding()
         .onAppear(perform: fetchWeek) // Carrega a semana atual quando a view aparece
     }
     
@@ -36,11 +37,12 @@ struct CalendarView: View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 // Dia da semana
-                Text(selectedDate.extractDate(format: "EEEE"))
+                Text(selectedDate.extractDate(format: "EEE"))
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .fontDesign(.rounded)
                     .foregroundStyle(.primary)
+                    .textCase(.uppercase)
                 
                 
                 HStack(spacing: 5) {
@@ -67,7 +69,7 @@ struct CalendarView: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .font(.title2)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.primary)
                 }
                 Button(action: {
                     listViewModel.feedbackHaptics()
@@ -75,12 +77,13 @@ struct CalendarView: View {
                 }) {
                     Image(systemName: "chevron.right")
                         .font(.title2)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.primary)
                 }
             }
             .padding(10)
-            .background(.thickMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 20))
+            .glass()
+           
         }
     }
     
@@ -89,17 +92,17 @@ struct CalendarView: View {
     private var weekDaysView: some View {
         HStack(spacing: 8) {
             ForEach(week, id: \.self) { day in
-                VStack(spacing: 12) {
+                VStack(spacing: nil) {
                     
                     // Nome do dia da semana
                     Text(day.extractDate(format: "E").prefix(1))
                         .font(.headline)
-                        .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? .white : .gray)
+                        .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? Color.primary : .gray)
 
                     // Número do dia
                     Text(day.extractDate(format: "dd"))
                         .font(.headline)
-                        .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? .white : .primary)
+                        .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? Color.primary : .primary)
                     
                 }
                 .frame(width: 45, height: 70)
@@ -107,14 +110,15 @@ struct CalendarView: View {
                     // selected day style
                     ZStack {
                         if isSameDay(date1: day, date2: selectedDate) {
-                            RoundedRectangle(cornerRadius: 15)
-                                .fill(Color.cyan)
-                                .shadow(radius: 1)
+                            RoundedRectangle(cornerRadius: 32)
+                                .fill(Color.cyan.opacity(0.8))
+                               
                         } else if day.isToday() {
-                             RoundedRectangle(cornerRadius: 15)
-                                .stroke(Color.gray, lineWidth: 1)
+                             RoundedRectangle(cornerRadius: 32)
+                                .stroke(Color.clear, lineWidth: 1)
                         }
                     }
+                    .glass()
                 )
                 .onTapGesture {
                     listViewModel.feedbackHaptics()
