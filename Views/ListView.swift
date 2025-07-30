@@ -47,14 +47,13 @@ extension ListView {
     private var tabbarButtons: some View {
         HStack(alignment: .center) {
             Button(action: {
-                let generator = UIImpactFeedbackGenerator(style: .heavy)
-                generator.impactOccurred()
+                listViewModel.feedbackHaptics()
                 showChatView.toggle()
             }) {
                 Image(systemName: "sparkles")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(.primary)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .clipShape(Circle())
                     .background(.cyan.opacity(0.7))
                     .glass()
@@ -69,14 +68,13 @@ extension ListView {
             Spacer()
             
             Button(action: {
-                let generator = UIImpactFeedbackGenerator(style: .heavy)
-                generator.impactOccurred()
+                listViewModel.feedbackHaptics()
                 showAddView.toggle()
             }) {
                 Image(systemName: "plus")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(.primary)
-                    .frame(width: 60, height: 60)
+                    .frame(width: 50, height: 50)
                     .clipShape(Circle())
                     .background(.cyan.opacity(0.7))
                     .glass()

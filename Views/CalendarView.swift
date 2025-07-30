@@ -105,7 +105,8 @@ struct CalendarView: View {
                         .foregroundStyle(isSameDay(date1: day, date2: selectedDate) ? Color.primary : .primary)
                     
                 }
-                .frame(width: 45, height: 70)
+                .frame(maxWidth: .infinity)
+                .frame(height: 80)
                 .background(
                     // selected day style
                     ZStack {
@@ -115,7 +116,7 @@ struct CalendarView: View {
                                
                         } else if day.isToday() {
                              RoundedRectangle(cornerRadius: 32)
-                                .stroke(Color.clear, lineWidth: 1)
+                                .stroke(Color.cyan, lineWidth: 2)
                         }
                     }
                     .glass()
@@ -133,7 +134,7 @@ struct CalendarView: View {
     
     // MARK: Funções de Lógica do Calendário
     
-    /// Carrega a semana inteira baseada no `currentWeekFirstDay`
+    // Carrega a semana inteira baseada no `currentWeekFirstDay`
     func fetchWeek() {
         let calendar = Calendar.current
         let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentWeekFirstDay)
@@ -149,7 +150,7 @@ struct CalendarView: View {
         self.week = weekDays
     }
     
-    /// Navega para a semana anterior
+    //Navega para a semana anterior
     func goToPreviousWeek() {
         if let newDate = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: currentWeekFirstDay) {
             currentWeekFirstDay = newDate
@@ -158,7 +159,7 @@ struct CalendarView: View {
         }
     }
     
-    /// Navega para a próxima semana
+    //Navega para a próxima semana
     func goToNextWeek() {
         if let newDate = Calendar.current.date(byAdding: .weekOfYear, value: 1, to: currentWeekFirstDay) {
             currentWeekFirstDay = newDate
