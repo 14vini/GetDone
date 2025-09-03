@@ -27,13 +27,16 @@ struct ListView: View {
                 .ignoresSafeArea(.all)
             
             VStack(spacing: nil) {
-                CalendarView(selectedDate: $selectedDate)
                 
+                // Calendar View
+                CalendarView(selectedDate: $selectedDate)
+                // list of items added
                 CardItems
             }
             
             VStack {
                 Spacer()
+                // float buttons (change the name)
                 tabbarButtons
             }
         }
@@ -128,7 +131,7 @@ extension ListView {
         .scrollContentBackground(.hidden)
         .padding(-25)
     }
-    
+    //colocar na viewModel
     func deleteFilteredItem(indexSet: IndexSet) {
         let idsToDelete = indexSet.map { filteredItems[$0].id }
         listViewModel.items.removeAll { item in
