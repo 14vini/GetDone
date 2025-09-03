@@ -133,8 +133,8 @@ struct CalendarView: View {
     }
     
     // MARK: Funções de Lógica do Calendário
-    
-    // Carrega a semana inteira baseada no `currentWeekFirstDay`
+    // cllocar essas funções na view model 
+    // Carrega a semana inteira 
     func fetchWeek() {
         let calendar = Calendar.current
         let weekInterval = calendar.dateInterval(of: .weekOfYear, for: currentWeekFirstDay)
