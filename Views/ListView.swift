@@ -49,25 +49,6 @@ extension ListView {
     
     private var tabbarButtons: some View {
         HStack(alignment: .center) {
-            Button(action: {
-                listViewModel.feedbackHaptics()
-                showChatView.toggle()
-            }) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(.primary)
-                    .frame(width: 50, height: 50)
-                    .clipShape(Circle())
-                    .background(.cyan.opacity(0.7))
-                    .glass()
-
-            }
-            .sheet(isPresented: $showChatView) {
-                ChatView(listViewModel: listViewModel)
-                    .presentationDetents([ .large ])
-                    .presentationCornerRadius(40)
-            }
-            
             Spacer()
             
             Button(action: {
